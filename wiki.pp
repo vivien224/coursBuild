@@ -13,8 +13,12 @@ exec {
     command => 'tar -xavf dokuwiki.tgz',
     path    => ['/usr/bin'],
     cwd     => '/usr/src',
-    creates => '/usr/src/dokuwiki';
+    creates => '/usr/src/dokuwiki-2020-07-29';
 
+  'rename' :
+    path    => ['/usr/bin/'],
+    command => 'mv dokuwiki-2020-07-29 dokuwiki',
+    cwd     => '/usr/src';
 }
 
 package {
