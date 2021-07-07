@@ -4,5 +4,6 @@ file {
     mode    => "0600",
     content => "Hello world",
     owner   => "root";
+    group   => 'root',
 
 }
