@@ -44,8 +44,8 @@ service {
 file {
   "/var/www/dokuwiki_virtualhost":
     ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
+    owner  => 'www-data',
+    group  => 'www-data',
     mode   => '0755';
 }
 
