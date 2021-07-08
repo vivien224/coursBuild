@@ -34,13 +34,6 @@ package {
 
 }
 
-service {
-  'apache2' :
-    ensure  => running,
-    require => Package['apache2','php'];
-}
-
-
 file {
   "/var/www/dokuwiki_virtualhost":
     ensure => 'directory',
@@ -75,6 +68,7 @@ exec {
 }
 
 service {
-  'apache2':
-    ensure  => 'running';
+  'apache2' :
+    ensure  => running,
+    require => Package['apache2','php'],Exec['sed_conf'];
 }
