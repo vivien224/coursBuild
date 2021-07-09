@@ -130,7 +130,7 @@ node 'server1' {
       site_dns  => 'recette-wiki';
     
     "site-B":
-      site_name => 'tajine.com'
-      site_dns  => 'tajine.com'
+      site_name => 'tajine.com',
+      site_dns  => 'tajine.com';
   }
 }
