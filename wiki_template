@@ -1,3 +1,10 @@
+$src_dir = '/usr/src'
+$dokuwiki_archive = "${src_dir}/dokuwiki.tgz"
+$dokuwiki_dir = "${src_dir}/dokuwiki-2020-07-29"
+$site_hostname = 'politique.wiki'
+$site_dir = 'politique-wiki'
+
+
 file {
   'dl':
     ensure         => 'present',
