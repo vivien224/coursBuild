@@ -24,11 +24,11 @@ class hosting {
 
 class dl_unzip_conf {
   file {
-  '/usr/src/dokuwiki.tgz':
-    ensure => 'present',
-    source => 'https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz',
+    '/usr/src/dokuwiki.tgz':
+      ensure => 'present',
+      source => 'https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz';
 
-    '/var/www/"${site_hostname}"':
+    "/var/www/${site_hostname}":
       ensure  => 'directory',
       owner   => 'www-data',
       group   => 'www-data',
@@ -36,10 +36,10 @@ class dl_unzip_conf {
       source  => "${dokuwiki_dir}",
       recurse => true;
 
-    '/etc/apache2/sites-available/"${site_hostname}".conf':
+    "/etc/apache2/sites-available/${site_hostname}.conf":
       ensure  => present,
       content => template('/home/vagrant/demo/demo3/site.conf'),
-      require => [Package['apache2'],File['/var/www/"${site_hostname}"']];
+      require => [Package['apache2'],File["/var/www/${site_hostname}"]];
   }
 
   exec {
@@ -48,14 +48,15 @@ class dl_unzip_conf {
     command => "tar xavf ${dokuwiki_archive}",
     creates => "${dokuwiki_dir}",
     path    => ['/bin','/usr/bin'],
-    require => File["${dokuwiki_archive}"],
+    require => File["${dokuwiki_archive}"];
 
   'enable-vhost-1':
-    command => 'a2ensite "${site_hostname}"',
+    command => "a2ensite ${site_hostname}",
     path    => ['/usr/bin', '/usr/sbin'],
-    require => [File['/etc/apache2/sites-available/"${site_hostname}".conf'],
+    require => [File["/etc/apache2/sites-available/${site_hostname}.conf"],
       Package['apache2']];
   }
+}
 
 
 node 'control' {
