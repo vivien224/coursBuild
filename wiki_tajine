@@ -47,7 +47,26 @@ class dokuwiki::params {
   $dokuwiki_dir = "${src_dir}/dokuwiki-2020-07-29" 
 }
 
-class dokuwiki::site {
+define conf_site {
+  file {
+    "/var/www/${site_name}":
+      ensure  => 'directory',
+      owner   => 'www-data',
+      group   => 'www-data',
+      # mode    => '0755',
+      source  => "${dokuwiki_dir}",
+      recurse => true;
+      
+    "/etc/apache2/sites-available/${site_name}.conf":
+      ensure  => present,
+      content => template('/home/vagrant/teaching-devops-puppet-v20210628/templates/site.conf.erb'),
+      require => [Package['apache2'],
+      File["/var/www/${site_name}"]];
+  }
+
+}
+
+define dokuwiki::site ($site_name="",$site_dns="") {
   # include dokuwiki::params
   $src_dir = '/usr/src'
   $dokuwiki_archive = "${src_dir}/dokuwiki.tgz"
@@ -106,11 +125,11 @@ node 'server1' {
   include hosting
   include dokuwiki
   dokuwiki::site {
-    "recette-wiki":
+    "site-A":
       site_name => 'recette-wiki',
       site_dns  => 'recette-wiki';
     
-    "tajine":
+    "site-B":
       site_name => 'tajine.com'
       site_dns  => 'tajine.com'
   }
