@@ -3,7 +3,7 @@ $dokuwiki_archive = "${src_dir}/dokuwiki.tgz"
 $dokuwiki_dir = "${src_dir}/dokuwiki-2020-07-29"
 
 class development {
-  package { 
+  package {
     'vim':
       ensure =>  installed;
     'make':
@@ -14,7 +14,7 @@ class development {
 }
 
 class hosting {
-  package { 
+  package {
     'apache2':
       ensure =>  installed;
     'php7.3':
@@ -27,21 +27,21 @@ class dl_unzip_conf {
   '/usr/src/dokuwiki.tgz':
     ensure => 'present',
     source => 'https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz',
-    
-    '/var/www/${site_hostname}':
+
+    '/var/www/"${site_hostname}"':
       ensure  => 'directory',
       owner   => 'www-data',
       group   => 'www-data',
       # mode    => '0755',
       source  => "${dokuwiki_dir}",
       recurse => true;
-      
-    '/etc/apache2/sites-available/${site_hostname}.conf':
+
+    '/etc/apache2/sites-available/"${site_hostname}".conf':
       ensure  => present,
       content => template('/home/vagrant/demo/demo3/site.conf'),
-      require => [Package['apache2'],File['/var/www/${site_hostname}']];
+      require => [Package['apache2'],File['/var/www/"${site_hostname}"']];
   }
-  
+
   exec {
   'dokuwiki::unarchive':
     cwd     => "${src_dir}",
@@ -49,16 +49,16 @@ class dl_unzip_conf {
     creates => "${dokuwiki_dir}",
     path    => ['/bin','/usr/bin'],
     require => File["${dokuwiki_archive}"],
-   
+
   'enable-vhost-1':
-    command => 'a2ensite ${site_hostname}',
+    command => 'a2ensite "${site_hostname}"',
     path    => ['/usr/bin', '/usr/sbin'],
-    require => [File['/etc/apache2/sites-available/${site_hostname}.conf'],
+    require => [File['/etc/apache2/sites-available/"${site_hostname}".conf'],
       Package['apache2']];
   }
 
 
-node 'control' { 
+node 'control' {
   include development
 }
 
@@ -68,7 +68,7 @@ node 'server0' {
 
   include hosting
   include dl_unzip_conf
-  
+
 }
 
 node 'server1' {
