@@ -85,6 +85,10 @@ class dokuwiki::site {
   }
 }
 
+define all_site {
+  
+}
+
 node 'control' {
 }
 
@@ -98,10 +102,16 @@ node 'server0' {
 }
 
 node 'server1' {
-  $site_name = 'recettes-wiki'
-  $site_dns = 'recettes.wiki'
 
   include hosting
   include dokuwiki
-  include dokuwiki::site
+  dokuwiki::site {
+    "recette-wiki":
+      site_name => 'recette-wiki',
+      site_dns  => 'recette-wiki';
+    
+    "tajine":
+      site_name => 'tajine.com'
+      site_dns  => 'tajine.com'
+  }
 }
